@@ -7,6 +7,7 @@
 
 import { store, BUILTIN_GESTURES, ICON_CHOICES } from '../store.js';
 import { recognizer } from '../recognizer.js';
+import { handSVG, GESTURE_TIPS } from '../handshapes.js';
 import { esc, icon, cameraBox, wireCamera, ensureCamera, toast, dialog, $, $$ } from '../ui.js';
 
 const TABS = [
@@ -66,7 +67,8 @@ function signsTab(body) {
     <div class="grid admin-signs">
       <article class="card">
         <h2>Gestos incluidos</h2>
-        <p class="muted">El modelo reconoce estas formas de la mano sin entrenamiento. Asígnales la frase que más uses en tu ventanilla.</p>
+        <p class="muted">El modelo reconoce estas formas de la mano sin entrenamiento. Imita el dibujo frente a la cámara: la fila se ilumina cuando se reconoce. Asigna a cada una la frase que más uses en tu ventanilla.</p>
+        <a class="link-btn" href="guia.html" target="_blank" rel="noopener">${icon('file')} Guía de señas para imprimir</a>
         <div class="sign-list" id="builtin"></div>
       </article>
 
@@ -110,7 +112,8 @@ function signsTab(body) {
       const s = signs.find((x) => x.id === g.id) || { phrase: '', enabled: false };
       return `<div class="sign-row" data-id="${g.id}">
         <label class="switch" title="Activar o desactivar"><input type="checkbox" data-k="enabled" ${s.enabled ? 'checked' : ''}><span></span><span class="sr-only">Activar ${esc(g.name)}</span></label>
-        <span class="sign-name">${esc(g.name)}</span>
+        <span class="sign-thumb">${handSVG(g.id, { size: 52, title: g.name })}</span>
+        <span class="sign-name">${esc(g.name)}<small>${esc(GESTURE_TIPS[g.id] || '')}</small></span>
         <input class="grow" data-k="phrase" value="${esc(s.phrase)}" aria-label="Frase para ${esc(g.name)}" maxlength="140">
       </div>`;
     }).join('');
@@ -225,6 +228,7 @@ function signsTab(body) {
         if (recording.samples.length >= SAMPLE_TARGET) finishRecording();
       }
     }
+    $$('#builtin .sign-row, #custom .sign-row', body).forEach((r) => r.classList.toggle('hit', r.dataset.id === f.label));
     status.innerHTML = f.landmarks
       ? f.label
         ? `${icon('checkCircle')}<span>Reconocida: <strong>${esc(f.phrase)}</strong> (${Math.round(f.score * 100)} %)</span>`

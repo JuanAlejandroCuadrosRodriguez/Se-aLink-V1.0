@@ -1,10 +1,11 @@
 // Punto de entrada: monta la vista según la ruta y aplica preferencias globales.
 
-import { store, currentCounter } from './store.js';
+import { store, currentCounter, BUILTIN_GESTURES } from './store.js';
+import { handSVG, GESTURE_TIPS } from './handshapes.js';
 import { session } from './session.js';
 import { camera } from './camera.js';
 import { currentRoute, navigate } from './router.js';
-import { capture, dialog, icon, $ } from './ui.js';
+import { capture, dialog, icon, esc, $ } from './ui.js';
 import * as prepare from './views/prepare.js';
 import * as conversation from './views/conversation.js';
 import * as reader from './views/reader.js';
@@ -86,6 +87,15 @@ $('#help').addEventListener('click', () =>
         <li>${icon('keyboard')}<div><strong>El agente responde por escrito</strong> o dictando con el micrófono. Su respuesta aparece en letra grande en «Leer respuesta».</div></li>
         <li>${icon('contrast')}<div><strong>Ajusta la lectura.</strong> Usa «Texto ampliado» y «Alto contraste» en la pantalla de respuesta.</div></li>
       </ol>
+      <h3 class="help-h">Señas que reconoce SeñaLink</h3>
+      <div class="sign-guide">
+        ${BUILTIN_GESTURES.map((g) => {
+          const s = store.get().signs.find((x) => x.id === g.id);
+          if (!s?.enabled) return '';
+          return `<figure>${handSVG(g.id, { size: 84, title: g.name })}<figcaption><strong>«${esc(s.phrase)}»</strong><span>${esc(GESTURE_TIPS[g.id])}</span></figcaption></figure>`;
+        }).join('')}
+      </div>
+      <p><a href="guia.html" target="_blank" rel="noopener">Abrir la guía de señas para imprimir</a></p>
       <p class="small muted">Atajo para el agente: <kbd>Ctrl</kbd> + <kbd>Enter</kbd> envía la respuesta escrita.</p>`,
   }),
 );

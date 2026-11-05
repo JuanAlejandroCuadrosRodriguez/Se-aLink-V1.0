@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SeñaLink · Guía de señas</title>
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --navy: #123c5a; --ink: #15344d; --muted: #5d6d7a; --line: #dbe3ea; --teal: #0b7a6e; --bg: #f1f5f8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Inter, system-ui, sans-serif; background: var(--bg); color: var(--ink); }
+    .sheet { max-width: 1100px; margin: 0 auto; padding: 32px 24px 40px; }
+    header { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+    .mark { width: 48px; height: 48px; border-radius: 12px; background: var(--navy); display: grid; place-items: center; }
+    h1 { margin: 0; font-size: 1.9rem; font-weight: 800; }
+    .lead { color: var(--muted); font-size: 1.05rem; margin: 6px 0 24px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; break-inside: avoid; }
+    .n { align-self: flex-start; font-weight: 700; color: var(--teal); font-size: 0.85rem; }
+    .phrase { font-size: 1.35rem; font-weight: 700; }
+    .name { font-size: 0.85rem; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: 0.03em; }
+    .tip { color: var(--muted); font-size: 0.95rem; line-height: 1.4; }
+    .tips { margin-top: 24px; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 18px 22px; color: var(--muted); line-height: 1.6; }
+    .tips strong { color: var(--ink); }
+    .actions { margin-top: 20px; display: flex; gap: 12px; }
+    .btn { border: 0; background: var(--navy); color: #fff; padding: 12px 20px; border-radius: 12px; font: inherit; font-weight: 600; cursor: pointer; text-decoration: none; }
+    .btn.out { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+    @media print { body { background: #fff; } .actions { display: none; } .card { border-color: #999; } }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <header>
+      <span class="mark"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0"/><path d="M14 10V4a2 2 0 0 0-4 0v2"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-6-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg></span>
+      <h1>Guía de señas de SeñaLink</h1>
+    </header>
+    <p class="lead">Haz la forma de la mano frente a la cámara y mantenla quieta un momento, hasta que se complete el círculo. El texto aparecerá en tu mensaje.</p>
+    <div class="grid" id="grid"></div>
+    <div class="tips">
+      <strong>Consejos:</strong> buena luz de frente · la mano entera dentro del encuadre, a la altura del pecho ·
+      palma hacia la cámara · para repetir la misma seña, baja la mano y vuelve a hacerla.
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="print()">Imprimir guía</button>
+      <a class="btn out" href="./#preparar">Volver a SeñaLink</a>
+    </div>
+  </main>
+  <script type="module">
+    import { store, BUILTIN_GESTURES } from './js/store.js';
+    import { handSVG, GESTURE_TIPS } from './js/handshapes.js';
+    const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+    const { signs } = store.get();
+    document.getElementById('grid').innerHTML = BUILTIN_GESTURES
+      .map((g) => ({ g, s: signs.find((x) => x.id === g.id) }))
+      .filter(({ s }) => s?.enabled)
+      .map(({ g, s }, i) => `<article class="card">
+          <span class="n">${i + 1}</span>
+          ${handSVG(g.id, { size: 130, title: g.name })}
+          <span class="name">${esc(g.name)}</span>
+          <span class="phrase">«${esc(s.phrase)}»</span>
+          <span class="tip">${esc(GESTURE_TIPS[g.id])}</span>
+        </article>`)
+      .join('');
+  </script>
+</body>
+</html>

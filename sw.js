@@ -2,10 +2,11 @@
 // - Código de la app: red primero (para recibir actualizaciones), caché si no hay red.
 // - Modelo y WebAssembly de MediaPipe (pesados): caché primero.
 
-const VERSION = 'senalink-v1';
+const VERSION = 'senalink-v2';
 const SHELL = [
   './',
   './index.html',
+  './guia.html',
   './manifest.webmanifest',
   './css/styles.css',
   './img/icon.svg',
@@ -20,6 +21,7 @@ const SHELL = [
   './js/speech.js',
   './js/ui.js',
   './js/icons.js',
+  './js/handshapes.js',
   './js/views/prepare.js',
   './js/views/conversation.js',
   './js/views/reader.js',

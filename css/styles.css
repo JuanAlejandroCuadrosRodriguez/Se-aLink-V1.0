@@ -328,6 +328,20 @@ input[type='range'] { width: 100%; accent-color: var(--navy); }
 .bar small { font-size: 0.7rem; color: var(--muted); }
 code { background: var(--soft); padding: 2px 6px; border-radius: 6px; }
 
+/* --- Ilustraciones de señas --------------------------------------------- */
+.hand-svg { display: block; flex: none; }
+.sign-thumb { width: 60px; height: 64px; display: grid; place-items: center; background: #fff; border: 1px solid var(--line); border-radius: 10px; flex: none; }
+.sign-name small { display: block; font-weight: 400; color: var(--muted); font-size: 0.8rem; line-height: 1.3; margin-top: 2px; }
+#builtin .sign-name { width: auto; flex: 1 1 200px; }
+#builtin .sign-row input { flex: 1 1 100%; margin-left: 126px; }
+.sign-row { padding: 6px; border-radius: 12px; transition: background 0.15s; }
+.sign-row.hit { background: var(--teal-bg); box-shadow: inset 0 0 0 2px var(--teal); }
+.help-h { margin-top: 20px; }
+.sign-guide { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; margin: 12px 0; }
+.sign-guide figure { margin: 0; display: flex; flex-direction: column; gap: 8px; align-items: center; text-align: center; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+.sign-guide figcaption { display: flex; flex-direction: column; gap: 2px; font-size: 0.85rem; color: var(--muted); }
+.sign-guide figcaption strong { color: var(--ink); font-size: 0.95rem; }
+
 /* --- Pie, diálogo y avisos ----------------------------------------------- */
 .footbar { border-top: 1px solid var(--line); background: var(--bg); }
 .footbar-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 76px; flex-wrap: wrap; padding-top: 12px; padding-bottom: 12px; color: var(--muted); }
@@ -376,6 +390,7 @@ kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6p
   .btn-lg { width: 100%; }
   .stats { grid-template-columns: minmax(0, 1fr); }
   .sign-name { width: 100%; }
+  #builtin .sign-row input { margin-left: 0; }
   .cam { aspect-ratio: 4 / 3; }
   .cam-caption { font-size: 0.9rem; padding: 10px 14px; }
   .cam-chip { top: 10px; left: 10px; font-size: 0.85rem; padding: 6px 10px; }

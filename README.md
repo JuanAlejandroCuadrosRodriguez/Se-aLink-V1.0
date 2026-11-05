@@ -59,6 +59,8 @@ La voz **nunca** se reproduce sola: solo al pulsar «Confirmar y reproducir en v
 
 1. **Gestos incluidos:** el modelo reconoce 7 posturas sin entrenamiento (mano abierta, pulgar arriba/abajo,
    índice arriba, V, puño, «te quiero»). A cada una se le asigna una frase de ventanilla editable.
+   Guía ilustrada: [`guia.html`](guia.html) (imprimible, usa las frases configuradas) o [`docs/guia-de-senas.png`](docs/guia-de-senas.png).
+   También aparece en «Ayuda de accesibilidad» y en Configuración, donde la fila se ilumina al reconocer el gesto.
 2. **Señas propias (LSP):** en Configuración se añade una frase y se graban ~40 muestras de la mano.
    Se clasifican con k vecinos más cercanos sobre los landmarks normalizados (posición, tamaño y mano izquierda/derecha).
 3. **Estabilización:** una seña se acepta cuando se mantiene ~0,7 s (círculo de progreso en la cámara) y no se repite
@@ -72,6 +74,7 @@ modelo secuencial entrenado con vídeos.
 
 ```
 index.html              Estructura base (cabecera, pasos, pie)
+guia.html               Guía de señas imprimible
 css/styles.css          Estilos, modo texto ampliado y alto contraste
 js/app.js               Arranque y navegación
 js/router.js            Rutas por hash (#preparar, #conversar, #leer, #fin, #config)
@@ -79,6 +82,7 @@ js/store.js             Configuración persistente (localStorage)
 js/session.js           Atención en curso (mensajes y borrador)
 js/camera.js            Cámara local compartida
 js/recognizer.js        MediaPipe + clasificación + dibujo de la mano
+js/handshapes.js        Ilustraciones SVG de los gestos
 js/signs.js             Normalización, KNN y estabilizador (sin DOM, con pruebas)
 js/speech.js            Síntesis de voz y dictado
 js/ui.js                Utilidades de interfaz
